@@ -1,3 +1,4 @@
+1
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,7 +123,7 @@
     table.catalogue th:nth-child(2), table.catalogue td:nth-child(2) { display: none; }
   }
 
-</style>
+.address-wrapper { position: relative; } .address-suggestions {   position: absolute; top: 100%; left: 0; right: 0;   background: var(--card); border: 1px solid var(--border);   border-top: none; border-radius: 0 0 6px 6px;   list-style: none; margin: 0; padding: 0;   z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,.1); } .address-suggestions li { padding: 8px 12px; cursor: pointer; font-size: .9rem; } .address-suggestions li:hover { background: var(--bg); } </style>
 </head>
 <body>
 
@@ -165,7 +166,9 @@
       </div>
       <div class="full">
         <label for="fAddress">Delivery address <span class="req">*</span></label>
-        <input type="text" id="fAddress" placeholder="Street, suburb, state, postcode">
+                <div class="address-wrapper">
+          <input type="text" id="fAddress" placeholder="Street, suburb, state, postcode" autocomplete="off">
+        </div>
       </div>
     </div>
   </section>
@@ -483,7 +486,47 @@ $("btnSubmit").addEventListener("click", async () => {
 $("franchiseeSelect").addEventListener("change", autofillFranchiseeDetails);
 buildCatalogue();
 updateTotals();
+function initAddressAutocomplete() {
+  const input = $("fAddress");
+  let dropdown = null, timer = null;
+  function removeDropdown() { if (dropdown) { dropdown.remove(); dropdown = null; } }
+  function fmt(item) {
+    const a = item.address, parts = [];
+    if (a.house_number && a.road) parts.push(a.house_number + " " + a.road);
+    else if (a.road) parts.push(a.road);
+    parts.push(a.suburb || a.town || a.city || "");
+    if (a.state) parts.push(a.state);
+    if (a.postcode) parts.push(a.postcode);
+    return parts.filter(Boolean).join(", ");
+  }
+  input.addEventListener("input", function() {
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 4) { removeDropdown(); return; }
+    timer = setTimeout(async function() {
+      try {
+        const res = await fetch("https://nominatim.openstreetmap.org/search?q=" + encodeURIComponent(q) +
+          "&countrycodes=au&format=json&addressdetails=1&limit=5", { headers: { "Accept-Language": "en-AU" } });
+        const results = await res.json();
+        removeDropdown();
+        if (!results.length) return;
+        dropdown = document.createElement("ul");
+        dropdown.className = "address-suggestions";
+        results.forEach(function(item) {
+          const li = document.createElement("li");
+          li.textContent = fmt(item);
+          li.addEventListener("mousedown", function(e) { e.preventDefault(); input.value = li.textContent; removeDropdown(); });
+          dropdown.appendChild(li);
+        });
+        input.parentNode.appendChild(dropdown);
+      } catch(e) { removeDropdown(); }
+    }, 350);
+  });
+  input.addEventListener("blur", function() { setTimeout(removeDropdown, 150); });
+}
+
 loadFranchisees();
+initAddressAutocomplete();
 </script>
 
 </body>
