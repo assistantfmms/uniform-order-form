@@ -437,7 +437,7 @@ function buildOrderData() {
       email: $("fEmail").value.trim(),
       address: $("fAddress").value.trim()
     },
-    items: lines.map(l => ({ name: l.name, size: l.size, qty: l.qty, unit: l.price })),
+    items: lines.map(l => ({ name: l.name, size: l.size, qty: l.qty, unitPrice: l.price, lineTotal: Math.round(l.qty * l.price * 100) / 100 })),
     totalQty: totalQty,
     totalPrice: Math.round(totalPrice * 100) / 100,
     freight: FREIGHT,
