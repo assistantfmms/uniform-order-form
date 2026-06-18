@@ -193,7 +193,7 @@
           <td class="num" id="totalPrice">$0.00</td>
         </tr>
         <tr>
-          <td colspan="4">Freight (Express Post)</td>
+          <td colspan="4">Freight (Express Post — Trackable)</td>
           <td class="num" id="freightAmount">$0.00</td>
         </tr>
         <tr>
@@ -214,7 +214,7 @@
     </div>
   </section>
 
-</main>
+</main>  <div id="successPage" style="display:none; max-width:680px; margin:40px auto; padding:0 16px;">   <section class="card" style="text-align:center; padding:48px 24px;">     <div style="font-size:3.5rem; margin-bottom:16px;">&#10003;</div>     <h2 style="color:var(--green); margin:0 0 12px;">Order Submitted Successfully</h2>     <p id="successRef" style="font-size:1.05rem; color:var(--muted); margin-bottom:8px;"></p>     <p style="color:var(--muted); margin-bottom:32px;">A confirmation email is on its way.</p>     <button class="primary" onclick="resetForm()">Submit another order</button>   </section> </div>
 
 <footer>Jim's Electrical &mdash; Franchisee Uniform Order System</footer>
 
@@ -486,7 +486,7 @@ $("btnSubmit").addEventListener("click", async () => {
 $("franchiseeSelect").addEventListener("change", autofillFranchiseeDetails);
 buildCatalogue();
 updateTotals();
-function initAddressAutocomplete() {
+function resetForm() {   document.querySelector("main").style.display = "";   $("successPage").style.display = "none";   $("franchiseeSelect").value = "";   $("fPhone").value = $("fEmail").value = $("fAddress").value = "";   document.querySelectorAll("#catalogueBody .qty").forEach(q => q.value = 0);   updateTotals(); }  function initAddressAutocomplete() {
   const input = $("fAddress");
   let dropdown = null, timer = null;
   function removeDropdown() { if (dropdown) { dropdown.remove(); dropdown = null; } }
