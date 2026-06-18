@@ -437,7 +437,8 @@ function buildOrderData() {
       email: $("fEmail").value.trim(),
       address: $("fAddress").value.trim()
     },
-    items: lines.map(l => ({ name: l.name, size: l.size, qty: l.qty, unitPrice: l.price, lineTotal: Math.round(l.qty * l.price * 100) / 100 })),
+        items: lines.map(l => ({ name: l.name, size: l.size, qty: l.qty, unitPrice: l.price, lineTotal: Math.round(l.qty * l.price * 100) / 100 })),
+    itemsHtml: '<table style="border-collapse:collapse;width:100%;font-size:14px;margin:12px 0"><tr style="background:#122a4c;color:#fff"><th style="padding:8px;text-align:left">Item</th><th style="padding:8px;text-align:left">Size</th><th style="padding:8px;text-align:center">Qty</th><th style="padding:8px;text-align:right">Unit Price</th><th style="padding:8px;text-align:right">Line Total</th></tr>' + lines.map(l => '<tr style="border-bottom:1px solid #d8dee6"><td style="padding:8px">' + l.name + '</td><td style="padding:8px">' + l.size + '</td><td style="padding:8px;text-align:center">' + l.qty + '</td><td style="padding:8px;text-align:right">$' + l.price.toFixed(2) + '</td><td style="padding:8px;text-align:right">$' + (l.qty * l.price).toFixed(2) + '</td></tr>').join('') + '</table>',
     totalQty: totalQty,
     totalPrice: Math.round(totalPrice * 100) / 100,
     freight: FREIGHT,
@@ -469,12 +470,9 @@ $("btnSubmit").addEventListener("click", async () => {
       body: JSON.stringify(data)
     }).catch(err => console.warn("Power Automate webhook failed (non-fatal):", err));
     
-    setStatus("Order " + data.ref + " submitted. A confirmation email is on its way.", true);
-    // Reset the form for the next order.
-    $("franchiseeSelect").value = "";
-    $("fPhone").value = $("fEmail").value = $("fAddress").value = "";
-    document.querySelectorAll("#catalogueBody .qty").forEach(q => q.value = 0);
-    updateTotals();
+        $("successRef").textContent = "Order reference: " + data.ref;
+    document.querySelector("main").style.display = "none";
+    $("successPage").style.display = "block";
   } catch (err) {
     console.error("Order submission failed:", err);
     setStatus("Sorry — submission failed. Please try again or contact the office. (" + (err.code || err.message) + ")", false);
