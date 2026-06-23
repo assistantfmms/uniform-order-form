@@ -79,6 +79,11 @@
   }
   input:focus, textarea:focus, select:focus { outline: 2px solid var(--yellow); border-color: var(--navy-light); }
   .full { grid-column: 1 / -1; }
+  .catalogue-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   table.catalogue { width: 100%; border-collapse: collapse; font-size: 14px; }
   table.catalogue th {
     text-align: left;
@@ -126,8 +131,14 @@
     color: var(--text);
   }
   @media (max-width: 640px) {
-    .item-cell { min-width: 180px; gap: 8px; }
+    main { padding: 0 10px; }
+    section.card { padding: 16px 12px; }
+    table.catalogue { min-width: 620px; font-size: 13px; }
+    table.catalogue th, table.catalogue td { padding: 7px 8px; }
+    .item-cell { min-width: 190px; gap: 8px; }
     .item-thumb { width: 64px; height: 64px; flex-basis: 64px; }
+    table.catalogue select.size { width: 96px; }
+    table.catalogue input.qty { width: 58px; }
   }
   tfoot td { font-size: 15px; font-weight: 700; color: var(--navy); padding: 12px 10px; }
   .totals-note { font-size: 12px; color: var(--muted); margin-top: 8px; }
@@ -203,6 +214,7 @@
 
   <section class="card">
     <h2>3 &mdash; Uniform Items</h2>
+    <div class="catalogue-wrap">
     <table class="catalogue" id="catalogue">
       <thead>
         <tr>
@@ -231,6 +243,7 @@
         </tr>
       </tfoot>
     </table>
+    </div>
     <p class="totals-note">Prices are subject to change.</p>
   </section>
 
