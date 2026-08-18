@@ -25,6 +25,7 @@
     background: var(--bg);
     color: var(--text);
     line-height: 1.45;
+    overflow-x: hidden;
   }
   header {
     background: var(--navy);
@@ -72,9 +73,10 @@
     padding: 9px 10px;
     border: 1px solid var(--border);
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 16px;
     font-family: inherit;
     background: #fff;
+    min-height: 44px;
   }
   input:focus, textarea:focus, select:focus { outline: 2px solid var(--yellow); border-color: var(--navy-light); }
   .full { grid-column: 1 / -1; }
@@ -102,8 +104,8 @@
     text-transform: uppercase;
     letter-spacing: 0.4px;
   }
-  table.catalogue select.size { width: 120px; padding: 6px 6px; }
-  table.catalogue input.qty { width: 70px; padding: 6px 8px; text-align: center; }
+  table.catalogue select.size { width: 120px; padding: 6px 6px; min-height: 40px; }
+  table.catalogue input.qty { width: 70px; padding: 6px 8px; text-align: center; min-height: 40px; }
   td.line-total { font-weight: 600; white-space: nowrap; }
 
   .item-cell {
@@ -129,15 +131,37 @@
     font-weight: 600;
     color: var(--text);
   }
+  @media (max-width: 768px) {
+    header { padding: 18px 16px; }
+    header h1 { font-size: 19px; }
+    header p { font-size: 12.5px; }
+    main { margin-top: 18px; }
+    section.card { padding: 18px 16px; }
+  }
   @media (max-width: 640px) {
     main { padding: 0 10px; }
     section.card { padding: 16px 12px; }
-    table.catalogue { min-width: 620px; font-size: 13px; }
+    table.catalogue { min-width: 560px; font-size: 13px; }
     table.catalogue th, table.catalogue td { padding: 7px 8px; }
-    .item-cell { min-width: 190px; gap: 8px; }
-    .item-thumb { width: 64px; height: 64px; flex-basis: 64px; }
-    table.catalogue select.size { width: 96px; }
-    table.catalogue input.qty { width: 58px; }
+    .item-cell { min-width: 170px; gap: 8px; }
+    .item-thumb { width: 56px; height: 56px; flex-basis: 56px; }
+    table.catalogue select.size { width: 90px; }
+    table.catalogue input.qty { width: 52px; }
+    table.catalogue th:nth-child(2), table.catalogue td:nth-child(2) { display: none; }
+    .grid { gap: 12px; }
+    .actions { flex-direction: column; align-items: stretch; }
+    .actions button.primary { width: 100%; }
+    tfoot td { font-size: 13.5px; padding: 10px 8px; }
+  }
+  @media (max-width: 400px) {
+    header .wrap { gap: 10px; }
+    header img[alt="Jim's Electrical Logo"] { height: 60px !important; }
+    header h1 { font-size: 17px; }
+    header p { font-size: 12px; }
+    section.card h2 { font-size: 14px; }
+    table.catalogue { min-width: 480px; }
+    .item-thumb { width: 46px; height: 46px; flex-basis: 46px; }
+    .item-name { font-size: 13px; }
   }
   tfoot td { font-size: 15px; font-weight: 700; color: var(--navy); padding: 12px 10px; }
   .totals-note { font-size: 12px; color: var(--muted); margin-top: 8px; }
@@ -150,6 +174,7 @@
     border-radius: 8px;
     padding: 13px 22px;
     cursor: pointer;
+    min-height: 44px;
   }
   button.primary { background: var(--yellow); color: var(--navy); }
   button.primary:hover { background: var(--yellow-dark); }
@@ -157,10 +182,6 @@
   #status.ok { color: var(--green); }
   #status.err { color: var(--red); }
   footer { text-align: center; font-size: 12px; color: var(--muted); padding: 20px; }
-  @media (max-width: 640px) {
-    table.catalogue th:nth-child(2), table.catalogue td:nth-child(2) { display: none; }
-  }
-
 .address-wrapper { position: relative; } .address-suggestions {   position: absolute; top: 100%; left: 0; right: 0;   background: var(--card); border: 1px solid var(--border);   border-top: none; border-radius: 0 0 6px 6px;   list-style: none; margin: 0; padding: 0;   z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,.1); } .address-suggestions li { padding: 8px 12px; cursor: pointer; font-size: .9rem; } .address-suggestions li:hover { background: var(--bg); } </style>
 </head>
 <body>
